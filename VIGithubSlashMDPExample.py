@@ -4,10 +4,15 @@ import numpy as np
 
 '''==================================================
 Initial set up
-=================================================='''
 
+https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
+
+=================================================='''
+import time
+
+start = time.time()
 # Hyperparameters
-SMALL_ENOUGH = 0.005
+SMALL_ENOUGH = 0.05 #0.000003 #0.005
 GAMMA = 0.9
 NOISE = 0.10
 
@@ -112,6 +117,9 @@ while True:
     iteration += 1
 
 
+end = time.time()
+diffTime = end - start
+print("total number of iterations:",iteration,", running time:",diffTime)
 print("The Final number of iterations is: ", iteration)
 print("The Final Resulting values are: ", V)
 print("The Final Resulting policy is: ", policy)

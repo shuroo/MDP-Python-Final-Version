@@ -4,6 +4,9 @@ import numpy as np
 
 '''==================================================
 Initial set up
+
+https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
+
 =================================================='''
 
 # Hyperparameters

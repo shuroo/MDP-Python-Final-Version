@@ -1,12 +1,14 @@
 # Example : https://wormtooth.com/20180207-markov-decision-process/
 
 import numpy as np
+import time
 
 import sys
 from collections import defaultdict
 py = 'Python ' + '.'.join(map(str, sys.version_info[:3]))
 print('Jupyter notebook with kernel: {}'.format(py))
 
+start = time.time()
 # states and actions
 S = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 2),
      (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
@@ -45,6 +47,7 @@ gamma = 0.99
 
 # initialize optimal value function
 V = {s: 0.0 for s in S}
+iteration = 0
 
 # tolerent error
 error = 10**(-3)
@@ -57,7 +60,7 @@ while True:
     V = nV
     if epsilon < error:
         break
-
+    iteration = iteration +1
 for s in S:
     print('{}: {:.2f}'.format(s, V[s]))
 
@@ -155,7 +158,7 @@ gamma = 0.9
 V = {s: 0.0 for s in S}
 
 # tolerent error
-error = 0.000003 #0.005
+error = 0.005 #0.000003 #0.005
 
 while True:
     nV = {}
@@ -178,3 +181,7 @@ for s in S:
     #     continue
     print('{}: {}'.format(s, pi[s]))
 
+
+end = time.time()
+diffTime = end - start
+print("total number of iterations:",iteration,", running time:",diffTime)

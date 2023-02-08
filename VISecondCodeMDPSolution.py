@@ -3,16 +3,23 @@
 import numpy as np
 
 '''==================================================
-Initial set up
+
+The Naive Running: Applying Problem2 on Code number 2 - 
+
+Both the Problem and the are Code taken from:
 
 https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
+
+No Changes (but counting the number of iterations).
+ 
+ Used for final project by Shiri Rave, January 2023.
 
 =================================================='''
 import time
 
 start = time.time()
 # Hyperparameters
-SMALL_ENOUGH = 0.005 # 0.000003 #
+SMALL_ENOUGH = 0.05 #0.000003 #0.005
 GAMMA = 0.9
 NOISE = 0.10
 
@@ -22,42 +29,29 @@ for i in range(3):
     for j in range(4):
         all_states.append((i, j))
 
-# states - first benchmark:
-
-S = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 2),
-     (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
-
 # Define rewards for all states
 rewards = {}
 for i in all_states:
-    if i == (0, 3):
-        rewards[i] = 1
-    elif i == (1, 3):
+    if i == (1, 2):
+        rewards[i] = -1
+    elif i == (2, 2):
         rewards[i] = -1
     elif i == (2, 3):
-        rewards[i] = -1
+        rewards[i] = 1
     else:
-        rewards[i] = -0.02
+        rewards[i] = 0
 
-# actions - first benchmark:
-
-# A = {'U': (-1, 0), 'D': (1, 0), 'R': (0, 1), 'L': (0, -1)}
-
-# Dictionary of possible actions. We have two "end" states (1,2 and 2,2)
-# --> Need to fix this.
+# Dictionnary of possible actions. We have two "end" states (1,2 and 2,2)
 actions = {
     (0, 0): ('D', 'R'),
-    (0, 1): ('R', 'L'),
+    (0, 1): ('D', 'R', 'L'),
     (0, 2): ('D', 'L', 'R'),
-    #(0, 3): ('D', 'L'),
-    (1, 0): ('D', 'U'),
-    # (1, 1): ('D', 'R', 'L', 'U'), --> (1,1) should not exist.
-    (1, 2): ('D', 'U', 'R'),
+    (0, 3): ('D', 'L'),
+    (1, 0): ('D', 'U', 'R'),
+    (1, 1): ('D', 'R', 'L', 'U'),
     (1, 3): ('D', 'L', 'U'),
     (2, 0): ('U', 'R'),
-    (2, 1): ('L', 'R'),
-    (2, 2): ('L', 'R', 'U'),
-    (2, 3): ('L', 'U')
+    (2, 1): ('U', 'L', 'R'),
 }
 
 # Define an initial policy
@@ -67,18 +61,15 @@ for s in actions.keys():
 
 # Define initial value function
 V = {}
-
-#  reward function - first benchmark:
-# R = {s: -0.02 for s in S}
-# R[(0, 3)] = 1.0
-# R[(1, 3)] = -1.0
 for s in all_states:
     if s in actions.keys():
-        V[s] = -0.02
-    if s == (0, 3):
-        V[s] = 1
-    if s == (1, 3):
+        V[s] = 0
+    if s == (2, 2):
         V[s] = -1
+    if s == (1, 2):
+        V[s] = -1
+    if s == (2, 3):
+        V[s] = 1
 
 '''==================================================
 Value Iteration

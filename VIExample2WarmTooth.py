@@ -1,3 +1,14 @@
+'''==================================================
+
+Applying Problem1 on Code1 - Naive optimal VI Solution -
+
+Problem And Code are both taken FROM:
+
+https://wormtooth.com/20180207-markov-decision-process/
+
+To be used by Shiri Rave, January 2023.
+
+=================================================='''
 # Example : https://wormtooth.com/20180207-markov-decision-process/
 
 import numpy as np
@@ -184,4 +195,4 @@ for s in S:
 
 end = time.time()
 diffTime = end - start
-print("total number of iterations:",iteration,", running time:",diffTime)
+print("Total number of iterations:",iteration,", running time:",diffTime)

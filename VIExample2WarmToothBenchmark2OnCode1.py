@@ -1,12 +1,12 @@
 # Example : https://wormtooth.com/20180207-markov-decision-process/
 
 import numpy as np
-
+import time
 import sys
 from collections import defaultdict
 py = 'Python ' + '.'.join(map(str, sys.version_info[:3]))
 print('Jupyter notebook with kernel: {}'.format(py))
-import time
+
 
 start = time.time()
 

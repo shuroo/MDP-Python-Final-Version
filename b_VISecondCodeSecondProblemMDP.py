@@ -11,15 +11,17 @@ Both the Problem and the are Code taken from:
 https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
 
 No Changes (but counting the number of iterations).
+
+Epsilon: 0.005
  
- Used for final project by Shiri Rave, January 2023.
+Used for final project by Shiri Rave, January 2023.
 
 =================================================='''
 import time
 
 start = time.time()
 # Hyperparameters
-SMALL_ENOUGH = 0.05 #0.000003 #0.005
+SMALL_ENOUGH = 0.005
 GAMMA = 0.9
 NOISE = 0.10
 

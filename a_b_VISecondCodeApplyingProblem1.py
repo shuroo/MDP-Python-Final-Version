@@ -3,76 +3,73 @@
 import numpy as np
 
 '''==================================================
-Initial set up
+
+Applying Problem1 on Code number 2 - 
+
+Problem 1 - BENCHMARK was taken FROM:
+
+https://wormtooth.com/20180207-markov-decision-process/ 
+
+Code taken from:
 
 https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
 
-=================================================='''
+Epsilon: 0.005
 
+Changes and adjustments by Shiri Rave, January 2023.
+
+=================================================='''
+import time
+
+start = time.time()
 # Hyperparameters
-SMALL_ENOUGH = 0.04 #0.005
+SMALL_ENOUGH = 0.005
 GAMMA = 0.9
 NOISE = 0.10
 
 # Define all states
 all_states = []
-for i in range(6):
-    for j in range(6):
+for i in range(3):
+    for j in range(4):
         all_states.append((i, j))
+
+# states - first benchmark:
+
+S = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 2),
+     (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
 # Define rewards for all states
 rewards = {}
 for i in all_states:
-    if i == (4, 4):
-        rewards[i] = -1
-    elif i == (5,4):
-        rewards[i] = -1
-    elif i == (5,5):
+    if i == (0, 3):
         rewards[i] = 1
+    elif i == (1, 3):
+        rewards[i] = -1
+    elif i == (2, 3):
+        rewards[i] = -1
     else:
-        rewards[i] = 0
+        rewards[i] = -0.02
 
-# Dictionnary of possible actions. We have two "end" states (1,2 and 2,2)
+# actions - first benchmark:
+
+# A = {'U': (-1, 0), 'D': (1, 0), 'R': (0, 1), 'L': (0, -1)}
+
+# Dictionary of possible actions. We have two "end" states (1,2 and 2,2)
+# --> Need to fix this.
 actions = {
     (0, 0): ('D', 'R'),
-    (0, 1): ('D', 'R', 'L'),
+    (0, 1): ('R', 'L'),
     (0, 2): ('D', 'L', 'R'),
-    (0, 3): ('D', 'L', 'R'),
-    (0, 4): ('D', 'L', 'R'),
-    (0, 5): ('D', 'L'),
-    (1, 0): ('D', 'U', 'R'),
-    (1, 1): ('D', 'R', 'L', 'U'),
-    (1, 2): ('D', 'R', 'L', 'U'),
-    (1, 3): ('D', 'R', 'L', 'U'),
-    (1, 4): ('D', 'R', 'L', 'U'),
-    (1, 5): ('D', 'L', 'U'),
-    (2, 0): ('D', 'U', 'R'),
-    (2, 1): ('D', 'R', 'L', 'U'),
-    (2, 2): ('D', 'R', 'L', 'U'),
-    (2, 3): ('D', 'R', 'L', 'U'),
-    (2, 4): ('D', 'R', 'L', 'U'),
-    (2, 5): ('D', 'L', 'U'),
-    (3, 0): ('D', 'U', 'R'),
-    (3, 1): ('D', 'R', 'L', 'U'),
-    (3, 2): ('D', 'R', 'L', 'U'),
-    (3, 3): ('D', 'R', 'L', 'U'),
-    (3, 4): ('D', 'R', 'L', 'U'),
-    (3, 5): ('D', 'L', 'U'),
-    (4, 0): ('D', 'U', 'R'),
-    (4, 1): ('D', 'R', 'L', 'U'),
-    (4, 2): ('D', 'R', 'L', 'U'),
-    (4, 3): ('D', 'R', 'L', 'U'),
-    (4, 5): ('D', 'L', 'U'),
-    (5, 0): ('U', 'R'),
-    (5, 1): ('U', 'L', 'R'),
-    (5, 2): ('U', 'L', 'R'),
-    (5, 3): ('U', 'L', 'R'),
+    #(0, 3): ('D', 'L'),
+    (1, 0): ('D', 'U'),
+    # (1, 1): ('D', 'R', 'L', 'U'), --> (1,1) should not exist.
+    (1, 2): ('D', 'U', 'R'),
+    (1, 3): ('D', 'L', 'U'),
+    (2, 0): ('U', 'R'),
+    (2, 1): ('L', 'R'),
+    (2, 2): ('L', 'R', 'U'),
+    (2, 3): ('L', 'U')
 }
-
-# In the original board: special states do not have actions:
-#       (2,2)(->-1), (1,2)(->-1) and (2,3)(->+1)
-#  In the wider 6X6 board this should be:
-#       (4,4)(->-1), (4,5)(->-1) and (5,5)(->+1)
 
 # Define an initial policy
 policy = {}
@@ -81,15 +78,18 @@ for s in actions.keys():
 
 # Define initial value function
 V = {}
+
+#  reward function - first benchmark:
+# R = {s: -0.02 for s in S}
+# R[(0, 3)] = 1.0
+# R[(1, 3)] = -1.0
 for s in all_states:
     if s in actions.keys():
-        V[s] = 0
-    if s == (4,4):
-        V[s] = -1
-    if s == (5,4):
-        V[s] = -1
-    if s == (5,5):
+        V[s] = -0.02
+    if s == (0, 3):
         V[s] = 1
+    if s == (1, 3):
+        V[s] = -1
 
 '''==================================================
 Value Iteration
@@ -142,9 +142,11 @@ while True:
     if biggest_change < SMALL_ENOUGH:
         break
     iteration += 1
-    print ("Starting iteration:",iteration)
 
 
+end = time.time()
+diffTime = end - start
+print("Total number of iterations:",iteration,", running time:",diffTime)
 print("The Final number of iterations is: ", iteration)
 print("The Final Resulting values are: ", V)
 print("The Final Resulting policy is: ", policy)

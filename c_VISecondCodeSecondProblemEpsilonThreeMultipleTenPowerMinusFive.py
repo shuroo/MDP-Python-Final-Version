@@ -1,67 +1,83 @@
+
 import numpy as np
 
 '''==================================================
-Initial set up
+
+The Naive Running: Applying Problem2 on Code number 2 - 
+
+Both the Problem and the are Code taken from:
+
+https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
+
+Change: Epsilon: 0.000003
+
+** This SHOULD NOT CONVERT ( Will Run forever )!! **
+
+ Used for final project by Shiri Rave, January 2023.
+
 =================================================='''
+import time
 
-#Hyperparameters
-SMALL_ENOUGH = 0.005
+start = time.time()
+# Hyperparameters
+SMALL_ENOUGH = 0.000003
 GAMMA = 0.9
-NOISE = 0.1
+NOISE = 0.10
 
-#Define all states
-all_states=[]
+# Define all states
+all_states = []
 for i in range(3):
     for j in range(4):
-            all_states.append((i,j))
+        all_states.append((i, j))
 
-#Define rewards for all states
+# Define rewards for all states
 rewards = {}
 for i in all_states:
-    if i == (1,2):
+    if i == (1, 2):
         rewards[i] = -1
-    elif i == (2,2):
+    elif i == (2, 2):
         rewards[i] = -1
-    elif i == (2,3):
+    elif i == (2, 3):
         rewards[i] = 1
     else:
         rewards[i] = 0
 
-#Dictionnary of possible actions. We have two "end" states (1,2 and 2,2)
+# Dictionnary of possible actions. We have two "end" states (1,2 and 2,2)
 actions = {
-    (0,0):('D', 'R'),
-    (0,1):('D', 'R', 'L'),
-    (0,2):('D', 'L', 'R'),
-    (0,3):('D', 'L'),
-    (1,0):('D', 'U', 'R'),
-    (1,1):('D', 'R', 'L', 'U'),
-    (1,3):('D', 'L', 'U'),
-    (2,0):('U', 'R'),
-    (2,1):('U', 'L', 'R'),
-    }
+    (0, 0): ('D', 'R'),
+    (0, 1): ('D', 'R', 'L'),
+    (0, 2): ('D', 'L', 'R'),
+    (0, 3): ('D', 'L'),
+    (1, 0): ('D', 'U', 'R'),
+    (1, 1): ('D', 'R', 'L', 'U'),
+    (1, 3): ('D', 'L', 'U'),
+    (2, 0): ('U', 'R'),
+    (2, 1): ('U', 'L', 'R'),
+}
 
-#Define an initial policy
-policy={}
+# Define an initial policy
+policy = {}
 for s in actions.keys():
     policy[s] = np.random.choice(actions[s])
 
-#Define initial value function
-V={}
+# Define initial value function
+V = {}
 for s in all_states:
     if s in actions.keys():
         V[s] = 0
-    if s ==(2,2):
-        V[s]=-1
-    if s == (1,2):
-        V[s]=-1
-    if s == (2,3):
-        V[s]=1
+    if s == (2, 2):
+        V[s] = -1
+    if s == (1, 2):
+        V[s] = -1
+    if s == (2, 3):
+        V[s] = 1
 
 '''==================================================
 Value Iteration
 =================================================='''
 
 iteration = 0
+
 while True:
     biggest_change = 0
     for s in all_states:
@@ -106,5 +122,12 @@ while True:
     # See if the loop should stop now
     if biggest_change < SMALL_ENOUGH:
         break
-    print(iteration);
     iteration += 1
+
+
+end = time.time()
+diffTime = end - start
+print("total number of iterations:" ,iteration ,", running time:" ,diffTime)
+print("The Final number of iterations is: ", iteration)
+print("The Final Resulting values are: ", V)
+print("The Final Resulting policy is: ", policy)

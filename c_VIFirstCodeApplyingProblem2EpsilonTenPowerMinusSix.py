@@ -10,7 +10,7 @@ The problem is taken from:
 
 https://towardsdatascience.com/how-to-code-the-value-iteration-algorithm-for-reinforcement-learning-8fb806e117d1
 
-Epsilon: error = 3*10**(-5)
+Epsilon: error = 3*10**(-6)
 
 To be used by Shiri Rave, January 2023.
 
@@ -76,7 +76,7 @@ gamma = 0.9
 V = {s: 0.0 for s in S}
 
 # tolerent error
-error = 0.0000003
+error = 0.000003
 
 while True:
     nV = {}
